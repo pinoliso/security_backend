@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -49,14 +48,14 @@ class WebSecurityConfig{
         return new CorsFilter(source);
     }
 
-    private CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-        configuration.addAllowedOriginPattern("*"); // Configura los orígenes permitidos
-        configuration.addAllowedMethod("*"); // Permite todos los métodos HTTP
-        configuration.addAllowedHeader("*"); // Permite todos los encabezados
-        configuration.setAllowCredentials(true); // Permite las credenciales
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+    // private CorsConfigurationSource corsConfigurationSource() {
+    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+    //     configuration.addAllowedOriginPattern("*"); // Configura los orígenes permitidos
+    //     configuration.addAllowedMethod("*"); // Permite todos los métodos HTTP
+    //     configuration.addAllowedHeader("*"); // Permite todos los encabezados
+    //     configuration.setAllowCredentials(true); // Permite las credenciales
+    //     source.registerCorsConfiguration("/**", configuration);
+    //     return source;
+    // }
 }
