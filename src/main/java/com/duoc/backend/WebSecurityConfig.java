@@ -30,6 +30,10 @@ class WebSecurityConfig{
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST, Constants.LOGIN_URL).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recipes").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/recipes").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/api/recipes").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/recipes").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/recipes/*/comments").hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterAfter(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -29,15 +29,21 @@ public class JWTAuthenticationConfig {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList()));
 
+        // String token = Jwts.builder()
+        //         .add(claims)
+        //         .subject(username)
+        //         .issuedAt(new Date(System.currentTimeMillis()))
+        //         .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1440))
+        //         .and()
+        //         .signWith(getSigningKey(SUPER_SECRET_KEY))
+        //         .compact();
+
         String token = Jwts.builder()
-                .claims()
-                .add(claims)
-                .subject(username)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1440))
-                .and()
-                .signWith(getSigningKey(SUPER_SECRET_KEY))
-                .compact();
+                .setSubject(username) // Set the subject (e.g., username)
+                .setIssuedAt(new Date()) // Token issuance date
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1440)) // Token expiration date
+                .signWith(getSigningKey(SUPER_SECRET_KEY)) // Sign the token
+                .compact(); // Generate the token
 
         return "Bearer " + token;
     }

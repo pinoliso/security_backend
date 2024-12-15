@@ -1,6 +1,7 @@
 package com.duoc.backend.controller;
 
 import com.duoc.backend.JWTAuthenticationConfig;
+import com.duoc.backend.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +25,9 @@ public class LoginController {
             @RequestParam("user") String username,
             @RequestParam("encryptedPass") String encryptedPass) {
         
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        final User user = userDetailsService.loadUserByUsername(username);
 
-        if (!userDetails.getPassword().equals(encryptedPass)) {
+        if (!user.getPassword().equals(encryptedPass)) {
             throw new RuntimeException("Credenciales Inválidas");
         }
 

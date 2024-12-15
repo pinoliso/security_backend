@@ -23,20 +23,28 @@ import static com.duoc.backend.Constants.*;
 @Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-    private Claims setSigningKey(HttpServletRequest request) {
+    public Claims setSigningKey(HttpServletRequest request) {
         String jwtToken = request.
                 getHeader(HEADER_AUTHORIZACION_KEY).
                 replace(TOKEN_BEARER_PREFIX, "");
 
-                return Jwts.parser()
-                .verifyWith((SecretKey) getSigningKey(SUPER_SECRET_KEY))
-                .build()
-                .parseSignedClaims(jwtToken)
-                .getPayload();
+                // return Jwts.parser()
+                // .verifyWith((SecretKey) getSigningKey(SUPER_SECRET_KEY))
+                // .build()
+                // .parseSignedClaims(jwtToken)
+                // .getPayload();
+
+                jwtToken = jwtToken.replace("Bearer ", "").trim();
+
+                return Jwts.parserBuilder()
+                .setSigningKey((SecretKey) getSigningKey(SUPER_SECRET_KEY)) // Set the signing key
+                .build() // Build the parser
+                .parseClaimsJws(jwtToken) // Parse and validate the token
+                .getBody(); // Extract claims
 
     }
 
-    private void setAuthentication(Claims claims) {
+    public void setAuthentication(Claims claims) {
 
         Object authoritiesClaim = claims.get("authorities");
         List<GrantedAuthority> authorities = null;
@@ -59,7 +67,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     }
 
-    private boolean isJWTValid(HttpServletRequest request, HttpServletResponse res) {
+    public boolean isJWTValid(HttpServletRequest request, HttpServletResponse res) {
         String authenticationHeader = request.getHeader(HEADER_AUTHORIZACION_KEY);
         if (authenticationHeader == null || !authenticationHeader.startsWith(TOKEN_BEARER_PREFIX))
             return false;
